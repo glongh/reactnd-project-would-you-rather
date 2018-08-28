@@ -1,19 +1,33 @@
 import React, { Component } from 'react';
+import { connect } from  'react-redux';
+import { login } from '../actions/auth'
 
 class Login extends Component {
-    
-    render() {
-        return (
-            <div>
-                <h3>Select an username to login</h3>
-                <ul>
-                    <li>User1</li>
-                    <li>User2</li>
-                    <li>User3</li>
-                </ul>
-            </div>
-        )
+
+  handleOnUserLogin = (user) => {
+    this.props.dispatch(login(user))
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>Select an username to login</h3>
+        <ul>
+            {this.props.users && Object.keys(this.props.users).map((key) => (
+                <li key={key}>
+                    <div onClick={() => this.handleOnUserLogin(key)}>{this.props.users[key].name}</div>
+                </li>
+            ))}
+        </ul>
+      </div>
+    );
+  }
+}
+
+function mapStateToProps({users}){
+    return {
+        users
     }
 }
 
-export default Login;
+export default connect(mapStateToProps)(Login);

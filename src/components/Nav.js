@@ -1,8 +1,15 @@
-import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import { logout } from '../actions/auth';
+import { connect } from 'react-redux';
 
 class Nav extends Component {
+  handleLogout() {
+    this.props.dispatch(logout());
+  }
+
   render() {
+    const { user } = this.props;
     return (
       <nav>
         <NavLink to="/" exact>
@@ -14,14 +21,22 @@ class Nav extends Component {
         <NavLink to="/leaderboard" exact>
           Leaderboard
         </NavLink>
-        {this.props.user ? (
-          <div>{this.props.user} Log out</div>
-        ) : (
-          <div>Log In</div>
+        {user && (
+          <div>
+            <span>{user.name}</span>{' '}
+            <span onClick={() => this.handleLogout()}>Log out</span>
+          </div>
         )}
       </nav>
     );
   }
 }
 
-export default Nav;
+function mapStateToProps({ users, authedUser }) {
+  return {
+    authedUser,
+    user: users[authedUser]
+  };
+}
+
+export default connect(mapStateToProps)(Nav);

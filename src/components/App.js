@@ -6,26 +6,45 @@ import AddQuestion from "./AddQuestion";
 import Dashboard from "./Dashboard";
 import QuestionDetail from "./QuestionDetail";
 import Leaderboard from "./Leaderboard";
+import { handleReceiveUsers } from '../actions/users'
+import { connect } from 'react-redux'
 
 class App extends Component {
+
+  componentDidMount() {
+    this.props.dispatch(handleReceiveUsers());
+  }
+
   render() {
     return (
       <Router>
         <div>
-          <Login />
-          <Nav user="Gaston" />
-          <Route exact path="/add" component={AddQuestion} />
-          <Route exact path="/" component={Dashboard} />
-          <Route
-            exact
-            path="/questions/:question_id"
-            component={QuestionDetail}
-          />
-          <Route exact path="/leaderboard" component={Leaderboard} />
+          { this.props.authedUser ? (
+          <div>
+            <Nav />
+            <Route exact path="/add" component={AddQuestion} />
+            <Route exact path="/" component={Dashboard} />
+            <Route
+              exact
+              path="/questions/:question_id"
+              component={QuestionDetail}
+            />
+            <Route exact path="/leaderboard" component={Leaderboard} />
+          </div>
+          ) : (
+            <Login />
+          )}
         </div>
       </Router>
     );
   }
 }
 
-export default App;
+
+function mapStateToProps({authedUser}){
+  return {
+    authedUser: authedUser ? authedUser : null
+  }
+}
+
+export default connect(mapStateToProps)(App);
