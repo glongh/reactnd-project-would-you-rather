@@ -7,12 +7,14 @@ import Dashboard from "./Dashboard";
 import QuestionDetail from "./QuestionDetail";
 import Leaderboard from "./Leaderboard";
 import { handleReceiveUsers } from '../actions/users'
+import { handleReceiveQuestions } from '../actions/questions'
 import { connect } from 'react-redux'
 
 class App extends Component {
 
   componentDidMount() {
     this.props.dispatch(handleReceiveUsers());
+    this.props.dispatch(handleReceiveQuestions());
   }
 
   render() {

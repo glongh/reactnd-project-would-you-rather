@@ -1,6 +1,17 @@
+import { _getQuestions } from '../utils/_DATA'
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 export const ADD_QUESTION = 'ADD_QUESTION';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION'
+
+
+export function handleReceiveQuestions() {
+    return (dispatch) => {
+        return _getQuestions()
+        .then((questions) => {
+            dispatch(receiveQuestions(questions))
+        })
+    }
+}
 
 export function receiveQuestions(questions) {
   return {
